@@ -32,8 +32,6 @@ jobs:
         run: echo "${GOOGLE_APPLICATION_CREDENTIALS}" > ./cred.json
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
-      - run:
-          ls
       - name: Deploy Firebase Functions
         run: firebase deploy --only functions:runner
         env:
