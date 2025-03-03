@@ -9,12 +9,12 @@ from google.cloud.firestore_v1 import AsyncCollectionReference, FieldFilter
 
 app = initialize_app()
 options.set_global_options(region=options.SupportedRegion.ASIA_NORTHEAST1, memory=options.MemoryOption.MB_128)
-client = firestore_async.client(app=app, database_id="(default)")
 str2topic: Callable[[str], str] = lambda string: urlsafe_b64encode(string.encode()).decode().replace('=', '')
 JST = timezone(offset=timedelta(hours=9), name="JST")
 
 
 async def run(schedule_time: datetime):
+    client = firestore_async.client(app=app, database_id="(default)")
     matched_programs: dict[int, dict[str, set[str] | str | DatetimeWithNanoseconds]] = dict()
     async for cast in client.collection("hello-radiko-data").document("programs").collections():
         cast: AsyncCollectionReference
