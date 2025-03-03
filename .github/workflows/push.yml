@@ -33,6 +33,6 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
       - name: Deploy Firebase Functions
-        run: firebase deploy --only functions:download_timefree
+        run: firebase deploy --only functions:runner
         env:
           GOOGLE_APPLICATION_CREDENTIALS: "cred.json"
