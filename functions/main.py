@@ -8,7 +8,7 @@ from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 from google.cloud.firestore_v1 import AsyncCollectionReference, FieldFilter
 
 app = initialize_app()
-options.set_global_options(region=options.SupportedRegion.ASIA_NORTHEAST1, memory=options.MemoryOption.MB_128)
+options.set_global_options(region=options.SupportedRegion.ASIA_NORTHEAST1, memory=options.MemoryOption.MB_512)
 str2topic: Callable[[str], str] = lambda string: urlsafe_b64encode(string.encode()).decode().replace('=', '')
 JST = timezone(offset=timedelta(hours=9), name="JST")
 
