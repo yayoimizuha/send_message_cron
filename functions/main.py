@@ -22,7 +22,7 @@ def run(schedule_time: datetime):
                  .where(filter=FieldFilter("ft", ">", schedule_time + timedelta(minutes=10)))
                  .where(filter=FieldFilter("ft", "<=", schedule_time + timedelta(minutes=15)))).get()
         for doc in value:
-            print(cast.id)
+            print(f"{cast.id=}")
             print(doc.to_dict())
             if int(doc.id) in matched_programs.keys():
                 matched_programs[int(doc.id)]["target"].add(cast.id)
@@ -56,4 +56,4 @@ def runner(event: scheduler_fn.ScheduledEvent):
     #     asyncio.set_event_loop(loop)
     # loop.run_until_complete(run(event.schedule_time))
 
-run(datetime(year=2025, month=2, day=17, hour=0, minute=17,tzinfo=JST))
+# run(datetime(year=2025, month=2, day=17, hour=0, minute=17,tzinfo=JST))
