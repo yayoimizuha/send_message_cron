@@ -47,7 +47,7 @@ def run(schedule_time: datetime):
         messaging.send_each(messages)
 
 
-@scheduler_fn.on_schedule(schedule="*/5 * * * *")
+@scheduler_fn.on_schedule(schedule="*/5 * * * *",timezone=scheduler_fn.Timezone("Asia/Tokyo"))
 def runner(event: scheduler_fn.ScheduledEvent):
     run(event.schedule_time.astimezone(JST))
 # try:
