@@ -7,7 +7,8 @@ from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 from google.cloud.firestore_v1 import FieldFilter, CollectionReference
 
 app = initialize_app()
-options.set_global_options(region=options.SupportedRegion.ASIA_NORTHEAST1, memory=options.MemoryOption.MB_256)
+options.set_global_options(region=options.SupportedRegion.ASIA_NORTHEAST1, memory=options.MemoryOption.MB_256,
+                           timeout_sec=15)
 str2topic: Callable[[str], str] = lambda string: urlsafe_b64encode(string.encode()).decode().replace('=', '')
 JST = timezone(offset=timedelta(hours=9), name="JST")
 
@@ -48,12 +49,12 @@ def run(schedule_time: datetime):
 
 @scheduler_fn.on_schedule(schedule="*/5 * * * *")
 def runner(event: scheduler_fn.ScheduledEvent):
-     run(event.schedule_time)
-    # try:
-    #     loop = asyncio.get_running_loop()
-    # except RuntimeError:
-    #     loop = asyncio.new_event_loop()
-    #     asyncio.set_event_loop(loop)
-    # loop.run_until_complete(run(event.schedule_time))
+    run(event.schedule_time.astimezone(JST))
+# try:
+#     loop = asyncio.get_running_loop()
+# except RuntimeError:
+#     loop = asyncio.new_event_loop()
+#     asyncio.set_event_loop(loop)
+# loop.run_until_complete(run(event.schedule_time))
 
 # run(datetime(year=2025, month=2, day=17, hour=0, minute=17,tzinfo=JST))
