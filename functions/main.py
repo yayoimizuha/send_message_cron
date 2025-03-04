@@ -47,12 +47,13 @@ async def run(schedule_time: datetime):
 
 
 @scheduler_fn.on_schedule(schedule="*/5 * * * *")
-def runner(event: scheduler_fn.ScheduledEvent):
-    try:
-        loop = asyncio.get_running_loop()
-    except RuntimeError:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-    loop.run_until_complete(run(event.schedule_time))
+async def runner(event: scheduler_fn.ScheduledEvent):
+    await run(event.schedule_time)
+    # try:
+    #     loop = asyncio.get_running_loop()
+    # except RuntimeError:
+    #     loop = asyncio.new_event_loop()
+    #     asyncio.set_event_loop(loop)
+    # loop.run_until_complete(run(event.schedule_time))
 
 # asyncio.run(run(datetime(year=2025, month=2, day=17, hour=0, minute=17,tzinfo=JST)))
