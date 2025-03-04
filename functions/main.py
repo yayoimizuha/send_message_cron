@@ -42,16 +42,17 @@ async def run(schedule_time: datetime):
         }, topic=str2topic("notify")))
     for message in messages:
         print(message.data)
-    if messages.__len__()!=0:
+    if messages.__len__() != 0:
         messaging.send_each(messages)
 
 
 @scheduler_fn.on_schedule(schedule="*/5 * * * *")
 def runner(event: scheduler_fn.ScheduledEvent):
     try:
-        asyncio.get_running_loop().run_until_complete(run(event.schedule_time))
+        loop = asyncio.get_running_loop()
     except RuntimeError:
-        asyncio.run(run(event.schedule_time))
-
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+    loop.run_until_complete(run(event.schedule_time))
 
 # asyncio.run(run(datetime(year=2025, month=2, day=17, hour=0, minute=17,tzinfo=JST)))
