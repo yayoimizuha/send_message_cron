@@ -14,6 +14,7 @@ JST = timezone(offset=timedelta(hours=9), name="JST")
 
 
 async def run(schedule_time: datetime):
+    print(f"{schedule_time=}")
     client = firestore_async.client(app=app, database_id="(default)")
     matched_programs: dict[int, dict[str, set[str] | str | DatetimeWithNanoseconds]] = dict()
     async for cast in client.collection("hello-radiko-data").document("programs").collections():
@@ -47,7 +48,10 @@ async def run(schedule_time: datetime):
 
 @scheduler_fn.on_schedule(schedule="*/5 * * * *")
 def runner(event: scheduler_fn.ScheduledEvent):
-    asyncio.run(run(event.schedule_time))
+    try:
+        asyncio.get_running_loop().create_task(run(event.schedule_time))
+    except RuntimeError:
+        asyncio.run(run(event.schedule_time))
 
 
 # asyncio.run(run(datetime(year=2025, month=2, day=17, hour=0, minute=17,tzinfo=JST)))
