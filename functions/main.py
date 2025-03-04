@@ -49,7 +49,7 @@ async def run(schedule_time: datetime):
 @scheduler_fn.on_schedule(schedule="*/5 * * * *")
 def runner(event: scheduler_fn.ScheduledEvent):
     try:
-        asyncio.get_running_loop().create_task(run(event.schedule_time))
+        asyncio.get_running_loop().run_until_complete(run(event.schedule_time))
     except RuntimeError:
         asyncio.run(run(event.schedule_time))
 
